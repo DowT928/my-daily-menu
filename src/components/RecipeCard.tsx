@@ -39,7 +39,25 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
 
   return (
     <>
-      <div className="animate-fade-in rounded-lg border border-border bg-card p-4 warm-shadow transition-all">
+      <div className="animate-fade-in rounded-lg border border-border bg-card overflow-hidden warm-shadow transition-all">
+        {/* Image area */}
+        {recipe.image ? (
+          <img
+            src={recipe.image}
+            alt={recipe.name}
+            className="h-36 w-full object-cover cursor-pointer"
+            onClick={() => setExpanded(!expanded)}
+            onError={e => (e.currentTarget.style.display = 'none')}
+          />
+        ) : (
+          <div
+            className="flex h-28 w-full items-center justify-center bg-muted/50 cursor-pointer"
+            onClick={() => setExpanded(!expanded)}
+          >
+            <span className="text-3xl opacity-40">🍽</span>
+          </div>
+        )}
+        <div className="p-4">
         <div className="flex items-start justify-between">
           <div
             className="flex-1 cursor-pointer"
@@ -127,6 +145,7 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
             {inToday ? "已加入 ✓" : "加入今日菜单"}
           </Button>
         </div>
+      </div>
       </div>
 
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>

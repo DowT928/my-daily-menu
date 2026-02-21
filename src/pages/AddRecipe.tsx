@@ -21,6 +21,7 @@ export default function AddRecipe() {
   const [steps, setSteps] = useState("");
   const [prepTime, setPrepTime] = useState("");
   const [notes, setNotes] = useState("");
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     if (isEdit) {
@@ -33,6 +34,7 @@ export default function AddRecipe() {
         setSteps(recipe.steps);
         setPrepTime(recipe.prepTime);
         setNotes(recipe.notes);
+        setImage(recipe.image || "");
       }
     }
   }, [id, isEdit, recipes]);
@@ -41,7 +43,7 @@ export default function AddRecipe() {
     e.preventDefault();
     if (!name.trim()) return;
 
-    const data = { name: name.trim(), category, description, ingredients, steps, prepTime, notes };
+    const data = { name: name.trim(), category, description, ingredients, steps, prepTime, notes, image: image.trim() || undefined };
     if (isEdit) {
       updateRecipe(id!, data);
     } else {
@@ -103,6 +105,14 @@ export default function AddRecipe() {
         <div>
           <Label htmlFor="prepTime">准备时间</Label>
           <Input id="prepTime" value={prepTime} onChange={e => setPrepTime(e.target.value)} placeholder="例如：30分钟" />
+        </div>
+
+        <div>
+          <Label htmlFor="image">图片链接（可选）</Label>
+          <Input id="image" value={image} onChange={e => setImage(e.target.value)} placeholder="粘贴图片URL，留空则不显示图片" />
+          {image.trim() && (
+            <img src={image} alt="预览" className="mt-2 h-32 w-full rounded-lg border border-border object-cover" onError={e => (e.currentTarget.style.display = 'none')} />
+          )}
         </div>
 
         <div>
