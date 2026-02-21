@@ -9,6 +9,7 @@ export interface Recipe {
   steps: string;
   prepTime: string;
   notes: string;
+  image?: string;
   createdAt: string;
 }
 
