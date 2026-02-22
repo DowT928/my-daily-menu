@@ -108,10 +108,34 @@ export default function AddRecipe() {
         </div>
 
         <div>
-          <Label htmlFor="image">图片链接（可选）</Label>
-          <Input id="image" value={image} onChange={e => setImage(e.target.value)} placeholder="粘贴图片URL，留空则不显示图片" />
-          {image.trim() && (
-            <img src={image} alt="预览" className="mt-2 h-32 w-full rounded-lg border border-border object-cover" onError={e => (e.currentTarget.style.display = 'none')} />
+          <Label>菜谱图片（可选）</Label>
+          <div className="mt-1.5 flex gap-2">
+            <label className="flex-1 cursor-pointer">
+              <div className="flex h-10 items-center justify-center rounded-md border border-input bg-background text-sm text-muted-foreground hover:bg-accent transition-colors">
+                📷 拍照 / 从相册选择
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={e => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const reader = new FileReader();
+                  reader.onload = () => setImage(reader.result as string);
+                  reader.readAsDataURL(file);
+                }}
+              />
+            </label>
+            {image && (
+              <button type="button" onClick={() => setImage("")} className="rounded-md border border-input px-3 text-sm text-destructive hover:bg-destructive/10 transition-colors">
+                移除
+              </button>
+            )}
+          </div>
+          {image && (
+            <img src={image} alt="预览" className="mt-2 h-32 w-full rounded-lg border border-border object-cover" />
           )}
         </div>
 
